@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#F5A623">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sika AI">
+<meta name="description" content="Ghana's AI Business Platform for traders">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Sika AI — Know Your Money</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Epilogue:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+<!-- ONBOARD -->
+<div class="screen active" id="screen-onboard">
+  <div class="ob">
+    <div class="ob-rings"><div class="ob-ring"></div><div class="ob-ring"></div><div class="ob-ring"></div></div>
+    <div class="ob-ic">S</div>
+    <div class="ob-logo">Sika <em>AI</em></div>
+    <div class="ob-badge">🤖 Powered by Artificial Intelligence</div>
+    <div class="ob-h">Your Business.<br>Now Intelligent.</div>
+    <div class="ob-sub">Ghana's first AI-powered business manager for traders. Speak to record sales. Get real insights. Grow faster.</div>
+    <button class="ob-cta" onclick="startApp()">Start Free — No Sign Up Needed</button>
+    <div class="ob-skip" onclick="startApp()">I already have an account</div>
+  </div>
+</div>
+
+<!-- PIN -->
+<div class="screen" id="screen-pin">
+  <div class="pin-wrap">
+    <div class="pin-logo">Sika</div>
+    <div class="pin-sub">Enter your 4-digit PIN</div>
+    <div class="pin-dots">
+      <div class="pd" id="pd0"></div><div class="pd" id="pd1"></div>
+      <div class="pd" id="pd2"></div><div class="pd" id="pd3"></div>
+    </div>
+    <div class="pin-err" id="pin-err"></div>
+    <div class="pin-pad">
+      <div class="pk" onclick="pk('1')">1</div><div class="pk" onclick="pk('2')">2</div><div class="pk" onclick="pk('3')">3</div>
+      <div class="pk" onclick="pk('4')">4</div><div class="pk" onclick="pk('5')">5</div><div class="pk" onclick="pk('6')">6</div>
+      <div class="pk" onclick="pk('7')">7</div><div class="pk" onclick="pk('8')">8</div><div class="pk" onclick="pk('9')">9</div>
+      <div class="pk blank"></div><div class="pk" onclick="pk('0')">0</div><div class="pk del" onclick="pdel()">⌫</div>
+    </div>
+    <div class="pin-hint">Default PIN: 1234 &nbsp;·&nbsp; <span onclick="enterApp()">Skip for demo</span></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="screen-home">
+  <div class="tb">
+    <div class="tb-logo" id="logo-tap-zone">
+      <div class="tb-mark">S</div>
+      <div class="tb-name">Sika <span>AI</span></div>
+    </div>
+    <div class="tb-right">
+      <div class="tier-pill t-free" id="tier-badge">FREE</div>
+      <span style="font-size:20px;cursor:pointer;" onclick="go('screen-upgrade')">👑</span>
+    </div>
+  </div>
+
+  <div class="limit-banner hidden" id="limit-banner">
+    <div style="font-size:20px;">⚠️</div>
+    <div class="lb-tx"><strong>Free limit reached</strong><span>Upgrade for unlimited transactions</span></div>
+    <button class="lb-btn" onclick="showPaywall('transactions')">Upgrade</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-ai">🤖 AI Tracked</div>
+    <div class="hero-lbl">Today's Net Profit</div>
+    <div class="hero-amt"><span class="hero-cur">GHS</span><span id="h-profit">0.00</span></div>
+    <div class="hero-sub" id="h-sub">0 transactions today</div>
+    <div class="hero-pills">
+      <div class="pill"><div class="dot dg"></div><span id="h-in">GHS 0 in</span></div>
+      <div class="pill"><div class="dot dr"></div><span id="h-out">GHS 0 out</span></div>
+      <div class="pill" onclick="openModal('mo-summary')"><div class="dot dy"></div><span>Day Summary</span></div>
+    </div>
+  </div>
+
+  <div class="ai-strip">
+    <div class="ai-strip-ic">🧠</div>
+    <div>
+      <div class="ai-strip-lbl">AI Insight</div>
+      <div class="ai-strip-txt" id="ai-insight-txt">Tap ↻ to load your business intelligence</div>
+    </div>
+    <button class="ai-strip-btn" onclick="refreshInsight()">↻</button>
+  </div>
+
+  <div class="sh"><div class="sh-t">Quick Actions</div></div>
+  <div class="qa-grid">
+    <div class="qa" onclick="openModal('mo-sale')">
+      <div class="qa-ic icg">💵</div><div class="qa-tx"><strong>Add Sale</strong><span>Record income</span></div>
+    </div>
+    <div class="qa" onclick="openModal('mo-expense')">
+      <div class="qa-ic icr">🧾</div><div class="qa-tx"><strong>Expense</strong><span>Record cost</span></div>
+    </div>
+    <div class="qa" onclick="go('screen-stock')">
+      <div class="qa-ic icy">📦</div><div class="qa-tx"><strong>Stock</strong><span>Inventory</span></div>
+    </div>
+    <div class="qa" onclick="go('screen-ai')">
+      <div class="qa-ic icp">🤖</div><div class="qa-tx"><strong>Ask AI</strong><span id="ai-qa-sub">Pro feature</span></div>
+    </div>
+  </div>
+
+  <div class="sh">
+    <div class="sh-t">Recent Transactions</div>
+    <div class="sh-a" onclick="go('screen-sales')">See all</div>
+  </div>
+  <div class="txlist" id="h-txns"></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- SALES -->
+<div class="screen" id="screen-sales">
+  <div class="tb">
+    <div class="tb-back" onclick="go('screen-home')">← Back</div>
+    <div class="tb-name" style="font-size:18px;">Sales</div>
+    <div class="tb-act" onclick="openModal('mo-sale')">+ Add</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="txlist" id="all-txns"></div>
+</div>
+
+<!-- STOCK -->
+<div class="screen" id="screen-stock">
+  <div class="tb">
+    <div class="tb-back" onclick="go('screen-home')">← Back</div>
+    <div class="tb-name" style="font-size:18px;">Stock</div>
+    <div class="tb-act" onclick="openModal('mo-stock')">+ Add</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="sklist" id="sk-list"></div>
+</div>
+
+<!-- REPORT -->
+<div class="screen" id="screen-report">
+  <div class="tb">
+    <div class="tb-logo"><div class="tb-mark">S</div><div class="tb-name">Sika <span>AI</span></div></div>
+    <div style="font-size:11px;color:var(--muted);">Weekly Report</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="rg">
+    <div class="rc"><div class="rc-l">Total Sales</div><div class="rc-v pos" id="r-sales">GHS 0</div><div class="rc-s">This week</div></div>
+    <div class="rc"><div class="rc-l">Expenses</div><div class="rc-v neg" id="r-exp">GHS 0</div><div class="rc-s">This week</div></div>
+    <div class="rc full"><div class="rc-l">Net Profit</div><div class="rc-v" id="r-profit">GHS 0</div><div class="rc-s" id="r-ps">—</div></div>
+    <div class="rc full"><div class="rc-l">Daily Sales — Last 7 Days</div><div class="chart" id="r-chart"></div></div>
+    <div class="rc"><div class="rc-l">Transactions</div><div class="rc-v" id="r-count">0</div><div class="rc-s">This week</div></div>
+    <div class="rc"><div class="rc-l">Best Day</div><div class="rc-v" id="r-best" style="font-size:18px;">—</div><div class="rc-s">Peak sales</div></div>
+    <div class="rc full" id="insights-card">
+      <div class="rc-l">🤖 AI Business Insights</div>
+      <div id="insights-content"><div style="color:var(--dim);font-size:12px;">Add more transactions to unlock insights.</div></div>
+    </div>
+  </div>
+  <div style="padding:0 14px 14px;">
+    <button id="pdf-btn" style="width:100%;padding:13px;background:var(--s1);border:1px solid rgba(245,166,35,.25);border-radius:var(--r);color:var(--gold);font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;" onclick="handlePdfClick()">📄 Download Monthly Report PDF</button>
+  </div>
+</div>
+
+<!-- AI SCREEN -->
+<div class="screen" id="screen-ai">
+  <div class="tb">
+    <div class="tb-back" onclick="go('screen-home')">← Back</div>
+    <div class="tb-name" style="font-size:18px;">AI Assistant</div>
+    <div></div>
+  </div>
+  <div class="ai-hero">
+    <div class="ai-orb">🧠</div>
+    <div class="ai-title">Sika AI</div>
+    <div class="ai-sub-txt">Ask me anything about your business in English or Twi.</div>
+  </div>
+  <div class="ai-sugs">
+    <div class="ai-sug" onclick="askAI('How much profit did I make today?')">Today's profit?</div>
+    <div class="ai-sug" onclick="askAI('Who owes me money?')">Who owes me?</div>
+    <div class="ai-sug" onclick="askAI('What should I restock?')">Reorder stock?</div>
+    <div class="ai-sug" onclick="askAI('How can I grow my business?')">Growth tips</div>
+    <div class="ai-sug" onclick="askAI('What is my best selling item?')">Best seller?</div>
+  </div>
+  <div class="ai-chat" id="ai-chat">
+    <div class="ai-msg bot">Hello! I am your Sika AI business assistant. I know your sales, stock, and customers. Ask me anything!</div>
+  </div>
+  <div class="ai-input-wrap">
+    <input class="ai-input" id="ai-input" placeholder="Ask your AI assistant..." onkeydown="if(event.key==='Enter')sendAiMsg()"/>
+    <button class="ai-send" onclick="sendAiMsg()">➤</button>
+  </div>
+</div>
+
+<!-- CUSTOMERS -->
+<div class="screen" id="screen-customers">
+  <div class="tb">
+    <div class="tb-back" onclick="go('screen-home')">← Back</div>
+    <div class="tb-name" style="font-size:18px;">Customers</div>
+    <div class="tb-act" onclick="openModal('mo-cust')">+ Add</div>
+  </div>
+  <div class="spacer"></div>
+  <div class="clist" id="c-list"></div>
+</div>
+
+<!-- UPGRADE -->
+<div class="screen" id="screen-upgrade">
+  <div class="tb">
+    <div class="tb-back" onclick="go('screen-home')">← Back</div>
+    <div class="tb-name" style="font-size:18px;">Upgrade</div>
+    <div></div>
+  </div>
+  <div class="upg-hero">
+    <div class="upg-crown">👑</div>
+    <div class="upg-title">Go Pro</div>
+    <div class="upg-sub">Pay GHS 40/month via MoMo. Activate instantly with a code. No sign up required.</div>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <div class="plan-top"><div class="plan-name">Free</div><div class="plan-price">GHS 0</div></div>
+      <div class="pfs">
+        <div class="pf">5 transactions only</div>
+        <div class="pf">3 stock items only</div>
+        <div class="pf">2 customers only</div>
+        <div class="pf">Basic AI insights (home screen)</div>
+        <div class="pf">PIN lock security</div>
+      </div>
+      <button class="plan-btn out" id="free-btn">Current Plan</button>
+    </div>
+    <div class="plan rec">
+      <div class="plan-top"><div class="plan-name">Pro 💎</div><div class="plan-price">GHS 40<small>/mo</small></div></div>
+      <div class="pfs">
+        <div class="pf">Unlimited transactions</div>
+        <div class="pf">Unlimited stock items</div>
+        <div class="pf">Unlimited customers</div>
+        <div class="pf">🎙️ AI Voice Recording — speak your sales</div>
+        <div class="pf">🤖 Full AI Business Assistant</div>
+        <div class="pf">🧾 WhatsApp Receipt Generator</div>
+        <div class="pf">📊 Full Reports + AI Insights</div>
+        <div class="pf">📦 Supplier Reorder via WhatsApp</div>
+        <div class="pf">💰 AI Debt Collection Follow-up</div>
+        <div class="pf">📄 Monthly PDF Reports</div>
+        <div class="pf">🔔 Smart Reminders</div>
+      </div>
+      <button class="plan-btn" id="pro-btn" onclick="openModal('mo-pay-pro')">💳 Pay GHS 40 via MoMo</button>
+    </div>
+    <div class="plan">
+      <div class="plan-top"><div class="plan-name">Business 🏢</div><div class="plan-price">GHS 80<small>/mo</small></div></div>
+      <div class="pfs">
+        <div class="pf">Everything in Pro</div>
+        <div class="pf">Multi-staff access</div>
+        <div class="pf">Market Association Dashboard</div>
+        <div class="pf">School Canteen version</div>
+        <div class="pf">Church Business Group package</div>
+      </div>
+      <button class="plan-btn" onclick="openModal('mo-pay-biz')">💳 Pay GHS 80 via MoMo</button>
+    </div>
+  </div>
+  <div style="padding:0 14px 20px;">
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:16px;">
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600;">Already Paid? Enter Your Code</div>
+      <input class="fi" id="activate-code" placeholder="SIKA-XXXX" style="margin-bottom:10px;text-transform:uppercase;letter-spacing:2px;font-family:var(--fd);font-style:italic;font-size:18px;text-align:center;"/>
+      <button class="sub" onclick="activateCode(document.getElementById('activate-code').value)" style="margin-top:0;">✓ Activate Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="screen" id="screen-admin">
+  <div class="tb">
+    <div class="tb-back" onclick="go('screen-home')">← Back</div>
+    <div class="tb-name" style="font-size:18px;color:var(--gold);">Admin Panel</div>
+    <div style="font-size:10px;color:var(--muted);">Owner Only</div>
+  </div>
+  <div class="admin-stat-grid">
+    <div class="astat"><div class="astat-l">Active Users</div><div class="astat-v" style="color:var(--gold);" id="a-users">0</div></div>
+    <div class="astat"><div class="astat-l">Monthly Revenue</div><div class="astat-v" style="color:var(--green);" id="a-rev">GHS 0</div></div>
+    <div class="astat"><div class="astat-l">Codes Issued</div><div class="astat-v" id="a-codes">0</div></div>
+    <div class="astat"><div class="astat-l">Pending Payment</div><div class="astat-v" style="color:var(--red);" id="a-pending">0</div></div>
+  </div>
+  <div style="padding:14px;">
+    <div style="background:linear-gradient(135deg,rgba(245,166,35,.08),rgba(245,166,35,.04));border:1px solid rgba(245,166,35,.2);border-radius:var(--r);padding:16px;margin-bottom:14px;">
+      <div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:14px;">🔑 Generate Activation Code</div>
+      <div class="fg"><label class="fl">Customer Name</label><input class="fi" id="g-name" placeholder="e.g. Akosua Mensah"/></div>
+      <div class="fg"><label class="fl">Customer Phone</label><input class="fi" id="g-phone" placeholder="024XXXXXXX"/></div>
+      <div class="fg"><label class="fl">Plan</label>
+        <select class="fi" id="g-plan"><option value="pro">Pro — GHS 40/mo</option><option value="business">Business — GHS 80/mo</option></select>
+      </div>
+      <div class="fg"><label class="fl">Payment Status</label>
+        <select class="fi" id="g-paid"><option value="paid">✅ Paid — MoMo received</option><option value="pending">⏳ Pending payment</option></select>
+      </div>
+      <button class="sub" onclick="generateCode()">Generate Code</button>
+    </div>
+    <div id="gen-result" style="display:none;background:var(--s2);border:2px solid var(--gold);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:14px;">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Activation Code</div>
+      <div style="font-family:var(--fd);font-size:34px;font-style:italic;color:var(--gold);letter-spacing:4px;margin-bottom:14px;" id="gen-code-display">—</div>
+      <button class="sub wa" style="margin-bottom:8px;" onclick="sendCodeWA()">📲 Send to Customer via WhatsApp</button>
+      <button class="sub sec" onclick="copyGenCode()">📋 Copy Code</button>
+    </div>
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px;">All Codes</div>
+    <div id="codes-list"></div>
+    <div style="background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-top:14px;">
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600;">MoMo Number</div>
+      <input class="fi" id="momo-num-input" placeholder="0202204886" style="margin-bottom:8px;"/>
+      <button class="sub" onclick="saveMomoNum()" style="padding:11px;margin-top:0;font-size:13px;">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav" id="bnav" style="display:none;">
+  <div class="ni active" onclick="navTo('screen-home',0)"><span class="ni-ic">🏠</span><span class="ni-lb">Home</span></div>
+  <div class="ni" onclick="navTo('screen-sales',1)"><span class="ni-ic">💰</span><span class="ni-lb">Sales</span></div>
+  <div class="ni" onclick="navTo('screen-stock',2)"><span class="ni-ic">📦</span><span class="ni-lb">Stock</span></div>
+  <div class="ni" onclick="navTo('screen-report',3)"><span class="ni-ic">📊</span><span class="ni-lb">Report</span></div>
+  <div class="ni" onclick="navTo('screen-customers',4)"><span class="ni-ic">👥</span><span class="ni-lb">Customers</span></div>
+</nav>
+
+<!-- VOICE FAB -->
+<button class="voice-fab" id="voice-fab" style="display:none;" onclick="handleVoiceTap()">🎙️</button>
+
+<!-- LISTEN OVERLAY -->
+<div class="listen-ov" id="listen-ov">
+  <div class="listen-ring"><div class="listen-mic">🎙️</div></div>
+  <div class="listen-txt" id="listen-txt">Listening...</div>
+  <div class="listen-hint">Say: "Sold fabric to Ama for GHS 80 MoMo"</div>
+  <button class="listen-cancel" onclick="stopVoice()">Cancel</button>
+</div>
+
+<!-- PAYWALL -->
+<div class="paywall" id="paywall">
+  <div class="pw-sheet">
+    <div class="pw-handle"></div>
+    <div class="pw-icon" id="pw-icon">👑</div>
+    <div class="pw-title" id="pw-title">Upgrade to Pro</div>
+    <div class="pw-sub" id="pw-sub">This is a Pro feature.</div>
+    <div class="pw-feats" id="pw-feats"></div>
+    <button class="pw-cta" onclick="closePaywall();openModal('mo-pay-pro')">💳 Pay GHS 40 via MoMo — Unlock Now</button>
+    <button class="pw-dismiss" onclick="closePaywall()">Maybe later</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- Add Sale -->
+<div class="mo" id="mo-sale" onclick="cmo(event,'mo-sale')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Add Transaction</div>
+    <div class="tt">
+      <div class="tb_ si" id="t-inc" onclick="setType('income')">💵 Income</div>
+      <div class="tb_" id="t-exp" onclick="setType('expense')">🧾 Expense</div>
+    </div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" id="s-desc" placeholder="e.g. Fabric sold to Ama"/></div>
+    <div class="fg"><label class="fl">Amount (GHS)</label><input class="fi" id="s-amt" type="number" placeholder="0.00"/></div>
+    <div class="fg"><label class="fl">Customer Name (optional)</label><input class="fi" id="s-cust" placeholder="e.g. Kofi Mensah"/></div>
+    <div class="fg"><label class="fl">Payment Method</label>
+      <select class="fi" id="s-method"><option value="MoMo">📱 Mobile Money</option><option value="Cash">💵 Cash</option></select>
+    </div>
+    <button class="sub" onclick="addTxn()">Save Transaction</button>
+  </div>
+</div>
+
+<!-- Add Expense -->
+<div class="mo" id="mo-expense" onclick="cmo(event,'mo-expense')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Add Expense</div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" id="e-desc" placeholder="e.g. Thread & buttons"/></div>
+    <div class="fg"><label class="fl">Amount (GHS)</label><input class="fi" id="e-amt" type="number" placeholder="0.00"/></div>
+    <div class="fg"><label class="fl">Payment Method</label>
+      <select class="fi" id="e-method"><option value="MoMo">📱 Mobile Money</option><option value="Cash">💵 Cash</option></select>
+    </div>
+    <button class="sub danger" onclick="addExpense()">Save Expense</button>
+  </div>
+</div>
+
+<!-- Stock -->
+<div class="mo" id="mo-stock" onclick="cmo(event,'mo-stock')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Add Stock Item</div>
+    <div class="fg"><label class="fl">Item Name</label><input class="fi" id="sk-n" placeholder="e.g. Ankara Fabric"/></div>
+    <div class="fg"><label class="fl">Quantity</label><input class="fi" id="sk-q" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Unit Price (GHS)</label><input class="fi" id="sk-p" type="number" placeholder="0.00"/></div>
+    <div class="fg"><label class="fl">Supplier Phone</label><input class="fi" id="sk-sup" placeholder="024XXXXXXX"/></div>
+    <div class="fg"><label class="fl">Emoji Icon</label><input class="fi" id="sk-ic" placeholder="🧵" maxlength="4"/></div>
+    <button class="sub" onclick="addStock()">Save Item</button>
+  </div>
+</div>
+
+<!-- Customer -->
+<div class="mo" id="mo-cust" onclick="cmo(event,'mo-cust')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Add Customer</div>
+    <div class="fg"><label class="fl">Full Name</label><input class="fi" id="cn" placeholder="e.g. Akosua Mensah"/></div>
+    <div class="fg"><label class="fl">Phone Number</label><input class="fi" id="cp" type="tel" placeholder="024XXXXXXX"/></div>
+    <div class="fg"><label class="fl">Credit Owed (GHS)</label><input class="fi" id="cc" type="number" placeholder="0.00"/></div>
+    <button class="sub" onclick="addCustomer()">Save Customer</button>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="mo" id="mo-summary" onclick="cmo(event,'mo-summary')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">📋 Day Summary</div>
+    <div id="summary-content"></div>
+    <button class="sub sec" style="margin-top:14px;" onclick="closeModal('mo-summary')">Close</button>
+  </div>
+</div>
+
+<!-- Receipt -->
+<div class="mo" id="mo-receipt" onclick="cmo(event,'mo-receipt')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">🧾 WhatsApp Receipt</div>
+    <div id="receipt-content"></div>
+    <button class="sub wa" style="margin-top:14px;" onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
+    <button class="sub sec" onclick="closeModal('mo-receipt')">Close</button>
+  </div>
+</div>
+
+<!-- AI Confirm -->
+<div class="mo" id="mo-aiconfirm" onclick="cmo(event,'mo-aiconfirm')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">🤖 AI Understood</div>
+    <div id="ai-confirm-content"></div>
+    <button class="sub ai-btn" onclick="confirmAiTxn()">✓ Save This Transaction</button>
+    <button class="sub sec" onclick="closeModal('mo-aiconfirm');openModal('mo-sale')">Edit Manually</button>
+  </div>
+</div>
+
+<!-- MoMo Pro Payment -->
+<div class="mo" id="mo-pay-pro" onclick="cmo(event,'mo-pay-pro')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Pay GHS 40 — Pro 💎</div>
+    <div class="momo-step">
+      <div class="step-head"><div class="step-num">1</div><div class="step-head-txt">Send GHS 40 to this MoMo number</div></div>
+      <div style="background:var(--s3);border-radius:var(--rs);padding:14px;text-align:center;margin-bottom:10px;">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;">MoMo Number</div>
+        <div style="font-family:var(--fd);font-size:30px;font-style:italic;color:var(--gold);letter-spacing:3px;" id="show-momo-1">0202204886</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px;">Reference: SIKA PRO</div>
+      </div>
+      <button class="sub sec" style="margin-top:0;padding:11px;font-size:12px;" onclick="copyText('0202204886','MoMo number copied!')">📋 Copy Number</button>
+    </div>
+    <div class="momo-step">
+      <div class="step-head"><div class="step-num">2</div><div class="step-head-txt">Send your screenshot on WhatsApp</div></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Send your MoMo confirmation screenshot to us and we will send your code within 1 hour.</div>
+      <button class="sub wa" style="margin-top:0;padding:12px;font-size:13px;" onclick="sendPaymentWA('Pro','40')">📲 Send Screenshot on WhatsApp</button>
+    </div>
+    <div class="momo-step" style="margin-bottom:14px;">
+      <div class="step-head"><div class="step-num">3</div><div class="step-head-txt">Enter your activation code below</div></div>
+      <input class="fi" id="pro-code" placeholder="SIKA-XXXX" style="margin-bottom:10px;text-transform:uppercase;letter-spacing:2px;font-family:var(--fd);font-style:italic;font-size:18px;text-align:center;"/>
+      <button class="sub" onclick="activateCode(document.getElementById('pro-code').value,'mo-pay-pro')" style="margin-top:0;">✓ Activate Pro Now</button>
+    </div>
+    <button class="sub sec" onclick="closeModal('mo-pay-pro')">Cancel</button>
+  </div>
+</div>
+
+<!-- MoMo Business Payment -->
+<div class="mo" id="mo-pay-biz" onclick="cmo(event,'mo-pay-biz')">
+  <div class="bs">
+    <div class="bs-handle"></div>
+    <div class="bs-title">Pay GHS 80 — Business 🏢</div>
+    <div class="momo-step">
+      <div class="step-head"><div class="step-num">1</div><div class="step-head-txt">Send GHS 80 to this MoMo number</div></div>
+      <div style="background:var(--s3);border-radius:var(--rs);padding:14px;text-align:center;margin-bottom:10px;">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;">MoMo Number</div>
+        <div style="font-family:var(--fd);font-size:30px;font-style:italic;color:var(--gold);letter-spacing:3px;">0202204886</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px;">Reference: SIKA BUSINESS</div>
+      </div>
+      <button class="sub sec" style="margin-top:0;padding:11px;font-size:12px;" onclick="copyText('0202204886','MoMo number copied!')">📋 Copy Number</button>
+    </div>
+    <div class="momo-step">
+      <div class="step-head"><div class="step-num">2</div><div class="step-head-txt">Send screenshot on WhatsApp</div></div>
+      <button class="sub wa" style="margin-top:0;padding:12px;font-size:13px;" onclick="sendPaymentWA('Business','80')">📲 Send Screenshot on WhatsApp</button>
+    </div>
+    <div class="momo-step" style="margin-bottom:14px;">
+      <div class="step-head"><div class="step-num">3</div><div class="step-head-txt">Enter your activation code</div></div>
+      <input class="fi" id="biz-code" placeholder="SIKA-XXXX" style="margin-bottom:10px;text-transform:uppercase;letter-spacing:2px;font-family:var(--fd);font-style:italic;font-size:18px;text-align:center;"/>
+      <button class="sub" onclick="activateCode(document.getElementById('biz-code').value,'mo-pay-biz')" style="margin-top:0;">✓ Activate Business Now</button>
+    </div>
+    <button class="sub sec" onclick="closeModal('mo-pay-biz')">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
